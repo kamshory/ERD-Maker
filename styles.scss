@@ -6,16 +6,16 @@ body {
 }
 
 #entities-container {
-    margin: 20px 0;
-    height: calc(100vh - 340px);
+    margin: 0px 0;
+    height: calc(100vh - 350px);
     min-height: 200px;
     overflow: auto;
-    padding: 16px 0;
+    padding: 10px 10px;
 }
 
 .button-container
 {
-    padding: 16px;
+    padding: 10px 10px 0px 10px;
 }
 
 button {
@@ -34,8 +34,7 @@ select {
 
 #editor-form {
     margin-top: 5px;
-    margin-bottom: 10px;
-    padding: 16px;
+    padding: 10px ;
     border-top: 1px solid #DDD;
 
     h3 {
@@ -44,23 +43,43 @@ select {
 
     .table-container
     {
-        max-height: 110px;
+        max-height: 180px;
         overflow: auto;
     }
 
     table {
         width: 100%;
         border-collapse: collapse;
-        margin: 10px 0;
         border: 1px solid #ccc;
+        thead {
+            background-color: #f1f1f1; 
+            border: 1px solid #ccc;
+
+          }
+          
 
         th {
-            padding: 4px 4px;
             border: 1px solid #ccc;
+            position: sticky;
+            top: 0;
+            background-color: #f1f1f1;
+            padding: 8px;
+            text-align: left;
+            z-index: 2; 
 
             &.column-action {
                 text-align: center;
                 font-size: 11px;
+            }
+            &::before{
+                content: "";
+                width: 100%;
+                display: block;
+                position: absolute;
+                height: 1px;
+                background-color: #ccc;
+                top: -1px;
+                left: 0px;
             }
         }
 
@@ -119,13 +138,25 @@ input[type="checkbox"] {
 
     .entity-header {
         background-color: #EEEEEE;
+        button{
+            float: right;
+            width: 16px;
+            height: 16px;
+            border: none;
+            background-color: transparent;
+            font-size: 11px;
+            padding: 2px;
+            margin-right: 6px;
+            margin-top: 2px;
+        }
+        h4 {
+            margin: 0;
+            padding: 5px 50px 5px 10px;
+            border-bottom: 1px solid #DDDDDD;
+        }
     }
 
-    .entity-header h4 {
-        margin: 0;
-        padding: 5px 10px;
-        border-bottom: 1px solid #DDDDDD;
-    }
+    
 
     .entity-body ul {
         list-style-type: none;
@@ -137,9 +168,13 @@ input[type="checkbox"] {
         padding: 4px 10px;
         border-bottom: 1px solid #DDDDDD;
     }
+    .entity-body ul li:last-child{
+        border-bottom: none;
+    }
 
     .entity-footer {
         padding: 5px 10px;
+        display: none;
     }
 
     .entity-footer button {

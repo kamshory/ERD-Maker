@@ -69,11 +69,10 @@ function showEditor(entityIndex = -1) {
         document.getElementById("columns-table-body").innerHTML = '';
 
         entity.columns.forEach(col => {
-            console.log(col)
             addColumnToTable(col.name, col.type, col.nullable, col.default, col.primaryKey, col.autoIncrement, col.enumValues, col.length);
         });
     } else {
-        document.getElementById("entity-name").value = ''; // Clear the form for new entity
+        document.getElementById("entity-name").value = 'new_table'; // Clear the form for new entity
         document.getElementById("columns-table-body").innerHTML = ''; // Clear columns table
     }
     
@@ -82,7 +81,10 @@ function showEditor(entityIndex = -1) {
 
 // Add a new column to the entity editor
 function addColumn() {
-    addColumnToTable("", "VARCHAR", false, "", false, false, "", "");
+    let entityName = document.querySelector('#entity-name').value;
+    let count = document.querySelectorAll('.column-name').length;
+    let countStr = count > 0 ? count : '';
+    addColumnToTable(`${entityName}_col${countStr}`, "VARCHAR", false, "", false, false, "", "");
 }
 
 // Helper function to add a column to the columns table (used by both add and edit)
@@ -191,14 +193,15 @@ function renderEntities() {
         
         entityDiv.innerHTML = `
             <div class="entity-header">
+                <button onclick="deleteEntity(${index})">❌</button>
+                <button onclick="editEntity(${index})">✏️</button>
             <h4>${entity.name}</h4>
             </div>
             <div class="entity-body">
             <ul>${columnsInfo}</ul>
             </div>
             <div class="entity-footer">
-            <button onclick="editEntity(${index})">Edit</button>
-            <button onclick="deleteEntity(${index})">Delete</button>
+            
             </div>
         `;
 
