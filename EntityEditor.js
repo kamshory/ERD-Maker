@@ -77,10 +77,6 @@ class EntityEditor {
     }
 
     addCheckboxListeners() {
-
-
-        
-
         document.querySelector(".check-all-entity").addEventListener('change', (event) => {
             let checked = event.target.checked;
             let allEntities = document.querySelectorAll(".selected-entity");
@@ -92,7 +88,6 @@ class EntityEditor {
             }
             this.exportToSQL();
         });
-
         document.querySelector("#table-list").addEventListener('change', (event) => {
             if (event.target.classList.contains('selected-entity')) {
                 this.exportToSQL();
@@ -318,10 +313,8 @@ class EntityEditor {
     }
 
     exportToSQL() {
-        let sql = "";
-        
-        const selectedEntities = document.querySelectorAll('.selected-entity:checked');
-    
+        let sql = "";       
+        const selectedEntities = document.querySelectorAll('.selected-entity:checked');  
         selectedEntities.forEach((checkbox, index) => {
             const entityIndex = parseInt(checkbox.value); 
             const entity = this.entities[entityIndex]; 
@@ -338,7 +331,6 @@ class EntityEditor {
                 sql += "\n);\n\n";
             }
         });
-    
         document.querySelector('.query-generated').value = sql;
         console.log(sql);
     }
@@ -352,12 +344,10 @@ class EntityEditor {
     handleFileImport(event) {
         const file = event.target.files[0];
         const reader = new FileReader();
-
         reader.onload = function () {
             const content = reader.result;
             console.log(content);
         };
-
         reader.readAsText(file);
     }
 }
