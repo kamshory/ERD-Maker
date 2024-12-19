@@ -54,10 +54,6 @@ class ResizablePanels {
                 // Save the new width of the left panel in localStorage
                 localStorage.setItem('leftPanelWidth', leftPanelWidth);
             }
-            else
-            {
-                console.log('invalid')
-            }
         }
     }
 
@@ -111,6 +107,3 @@ class ResizablePanels {
         }
     }
 }
-
-// Instantiate the class with the panel selectors and a minimum width
-const resizablePanels = new ResizablePanels('.left-panel', '.right-panel', '.resize-bar', 200);

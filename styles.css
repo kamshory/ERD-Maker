@@ -1,3 +1,14 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  height: 100%;
+  width: 100%;
+}
+
 body {
   font-family: Arial, sans-serif;
   font-size: 13px;
@@ -6,15 +17,40 @@ body {
 }
 
 #entities-container {
-  margin: 0px 0;
+  margin: 0;
   height: calc(100vh - 350px);
   min-height: 200px;
   overflow: auto;
-  padding: 10px 10px;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+  overflow: hidden;
+}
+
+.left-panel, .right-panel {
+  overflow: auto;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.resize-bar {
+  width: 10px;
+  cursor: ew-resize;
+}
+
+.left-panel {
+  width: calc(70% - 5px);
+}
+
+.right-panel {
+  width: calc(30% - 5px);
+  background-color: #f4f4f4;
 }
 
 .button-container {
-  padding: 10px 10px 0px 10px;
+  padding: 10px 10px 0;
 }
 
 button {
@@ -81,11 +117,11 @@ select {
   height: 1px;
   background-color: #ccc;
   top: -1px;
-  left: 0px;
+  left: 0;
 }
 #editor-form table td {
   border: 1px solid #ccc;
-  padding: 0px;
+  padding: 0;
   text-align: left;
   font-size: 8px;
 }
@@ -144,7 +180,7 @@ input[type=checkbox] {
 .entity .entity-body ul {
   list-style-type: none;
   margin: 0;
-  padding: 0px 0px;
+  padding: 0;
 }
 .entity .entity-body ul li {
   padding: 4px 10px;
@@ -167,4 +203,30 @@ input[type=checkbox] {
 }
 .entity .entity-footer button {
   margin-bottom: 0;
+}
+
+#table-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  margin: 2px 0 10px 0;
+  height: 80px;
+  overflow: auto;
+}
+#table-list li {
+  padding: 0;
+  margin: 0;
+  line-height: 1.5;
+}
+#table-list li label {
+  padding: 0;
+}
+
+.right-panel textarea {
+  height: calc(100vh - 445px);
+  min-height: 100px;
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  resize: none;
 }/*# sourceMappingURL=styles.css.map */
