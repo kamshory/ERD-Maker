@@ -12,11 +12,23 @@ class Column {
 
     toSQL() {
         let columnDef = `${this.name} ${this.type}`;
-        if (this.nullable) columnDef += " NULL";
-        else columnDef += " NOT NULL";
-        if (this.primaryKey) columnDef += " PRIMARY KEY";
-        if (this.autoIncrement) columnDef += " AUTO_INCREMENT";
-        if (this.default) columnDef += ` DEFAULT ${this.default}`;
+        let nullable = false;
+        if (this.nullable && !this.primaryKey) {
+            columnDef += " NULL";
+            nullable = true;
+        }
+        else {
+            columnDef += " NOT NULL";
+        }
+        if (this.primaryKey) {
+            columnDef += " PRIMARY KEY";
+        }
+        if (this.autoIncrement) {
+            columnDef += " AUTO_INCREMENT";
+        }
+        if (this.default && (this.default.toLowerCase() != 'null' || nullable)) {
+            columnDef += ` DEFAULT ${this.default}`;
+        }
         return columnDef;
     }
 }
@@ -73,19 +85,15 @@ class EntityEditor {
         } else {
             this.currentEntityIndex = -1;
             let newTableName = 'new_table';
-            for(let i in this.entities)
-            { 
+            for (let i in this.entities) {
                 let duplicated = false;
-                for(let j in this.entities)
-                {
-                    newTableName = `new_table_${parseInt(i)+2}`;
-                    if(newTableName.toLowerCase() == this.entities[j].name.toLowerCase())
-                    {
+                for (let j in this.entities) {
+                    newTableName = `new_table_${parseInt(i) + 2}`;
+                    if (newTableName.toLowerCase() == this.entities[j].name.toLowerCase()) {
                         duplicated = true;
                     }
                 }
-                if(!duplicated)
-                {
+                if (!duplicated) {
                     break;
                 }
             }
@@ -119,7 +127,7 @@ class EntityEditor {
             <td><input type="checkbox" class="column-primaryKey" ${column.primaryKey ? 'checked' : ''}></td>
             <td><input type="checkbox" class="column-autoIncrement" ${column.autoIncrement ? 'checked' : ''}></td>
         `;
-        
+
         tableBody.appendChild(row);
     }
 
@@ -135,7 +143,7 @@ class EntityEditor {
         const row = button.closest("tr");
         row.remove();
     }
-    
+
     moveUp(button) {
         const row = button.closest("tr");
         const tableBody = document.getElementById("columns-table-body");
@@ -205,7 +213,7 @@ class EntityEditor {
             entityDiv.classList.add("entity");
 
             let columnsInfo = entity.columns.map(col => `<li>${col.name} (${col.type})</li>`).join('');
-            
+
             entityDiv.innerHTML = `
                 <div class="entity-header">
                     <button onclick="editor.deleteEntity(${index})">❌</button>
@@ -255,44 +263,38 @@ class EntityEditor {
             enumInput.style.display = "none";
         }
     }
-    
+
     exportToSQL() {
         let sql = "";
         this.entities.forEach(entity => {
             sql += `-- Entity: ${entity.name}\n`;
             sql += `CREATE TABLE IF NOT EXISTS ${entity.name} (\n`;
-    
+
             entity.columns.forEach(col => {
-                let columnDef = `${col.name} ${col.type}`;
-                if (col.nullable) columnDef += " NULL";
-                else columnDef += " NOT NULL";
-                if (col.primaryKey) columnDef += " PRIMARY KEY";
-                if (col.autoIncrement) columnDef += " AUTO_INCREMENT";
-                if (col.default) columnDef += ` DEFAULT ${col.default}`;
-                sql += `  ${columnDef},\n`;
+                sql += `  ${col.toSQL()},\n`;
             });
-    
+
             sql = sql.slice(0, -2); // Remove last comma
             sql += "\n);\n\n";
         });
-    
+
         console.log(sql);
     }
-    
+
     // Handle file import (for MySQL dump)
     importFromSQL() {
         document.getElementById('file-import').click();
     }
-    
+
     handleFileImport(event) {
         const file = event.target.files[0];
         const reader = new FileReader();
-    
-        reader.onload = function() {
+
+        reader.onload = function () {
             const content = reader.result;
             console.log(content);
         };
-    
+
         reader.readAsText(file);
     }
 }
