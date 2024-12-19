@@ -51,7 +51,7 @@ class Entity {
         let sql = `-- Entity: ${this.name}\n`;
         sql += `CREATE TABLE IF NOT EXISTS ${this.name} (\n`;
         this.columns.forEach(col => {
-            sql += `  ${col.toSQL()},\n`;
+            sql += `\t${col.toSQL()},\n`;
         });
         sql = sql.slice(0, -2); // Remove last comma
         sql += "\n);\n\n";
@@ -211,8 +211,7 @@ class EntityEditor {
         this.entities.forEach((entity, index) => {
             const entityDiv = document.createElement("div");
             entityDiv.classList.add("entity");
-
-            let columnsInfo = entity.columns.map(col => `<li>${col.name} (${col.type})</li>`).join('');
+            let columnsInfo = entity.columns.map(col => col.length > 0 ? `<li>${col.name} <span class="data-type">${col.type}(${col.length})</span></li>` : `<li>${col.name} <span class="data-type">${col.type}</span></li>`).join('');
 
             entityDiv.innerHTML = `
                 <div class="entity-header">

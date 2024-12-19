@@ -154,6 +154,14 @@ input[type=checkbox] {
 .entity .entity-body ul li:last-child {
   border-bottom: none;
 }
+.entity .entity-body ul li .data-type {
+  background-color: #E4E4E4;
+  padding: 2px 5px;
+  font-size: 10px;
+  float: right;
+  margin-left: 8px;
+  border-radius: 2px;
+}
 .entity .entity-footer {
   padding: 5px 10px;
   display: none;
