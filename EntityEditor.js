@@ -285,6 +285,7 @@ class EntityEditor {
     deleteEntity(index) {
         this.entities.splice(index, 1);
         this.renderEntities();
+        this.exportToSQL();
     }
 
     cancelEdit() {
@@ -320,19 +321,10 @@ class EntityEditor {
             const entity = this.entities[entityIndex]; 
     
             if (entity) {
-                sql += `-- Entity ${entityIndex + 1}: ${entity.name}\n`;
-                sql += `CREATE TABLE IF NOT EXISTS ${entity.name} (\n`;
-                let cols = [];
-                entity.columns.forEach((col, colIndex) => {
-                    cols.push(`  ${col.toSQL()}`);
-                });
-    
-                sql += cols.join("\r\n");
-                sql += "\n);\n\n";
+                sql += entity.toSQL();
             }
         });
         document.querySelector('.query-generated').value = sql;
-        console.log(sql);
     }
     
 
