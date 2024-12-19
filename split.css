@@ -17,7 +17,6 @@ body, html {
 }
 
 .left-panel, .right-panel {
-    flex: 1;
     overflow: auto;
     padding: 20px;
 }
@@ -28,8 +27,11 @@ body, html {
     cursor: ew-resize;
 }
 
-.left-panel, .right-panel {
-    min-width: 100px;
+.left-panel{
+    width: calc(70% - 5px);
+}
+.right-panel {
+    width: calc(30% - 5px);
 }
 
 .right-panel {
