@@ -63,6 +63,18 @@ body {
 .right-panel {
     width: calc(30% - 5px);
     background-color: $primary-bg-color;
+    textarea
+    {
+        height: calc(100vh - 445px);
+        min-height: 100px;
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+        resize: none;
+        &:focus-visible{
+            outline: none;
+        }
+    }
 }
 
 // Button container
@@ -269,15 +281,3 @@ input[type="checkbox"] {
     }
 }
 
-.right-panel
-{
-    textarea
-    {
-        height: calc(100vh - 445px);
-        min-height: 100px;
-        width: 100%;
-        padding: 10px;
-        box-sizing: border-box;
-        resize: none;
-    }
-}

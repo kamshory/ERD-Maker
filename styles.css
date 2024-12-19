@@ -48,6 +48,17 @@ body {
   width: calc(30% - 5px);
   background-color: #f4f4f4;
 }
+.right-panel textarea {
+  height: calc(100vh - 445px);
+  min-height: 100px;
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  resize: none;
+}
+.right-panel textarea:focus-visible {
+  outline: none;
+}
 
 .button-container {
   padding: 10px 10px 0;
@@ -220,13 +231,4 @@ input[type=checkbox] {
 }
 #table-list li label {
   padding: 0;
-}
-
-.right-panel textarea {
-  height: calc(100vh - 445px);
-  min-height: 100px;
-  width: 100%;
-  padding: 10px;
-  box-sizing: border-box;
-  resize: none;
 }/*# sourceMappingURL=styles.css.map */

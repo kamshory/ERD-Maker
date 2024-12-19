@@ -73,6 +73,31 @@ class EntityEditor {
             'UUID', 'VARBINARY', 'BINARY',
             'POLYGON', 'LINESTRING', 'POINT', 'GEOMETRY'
         ];
+        this.addCheckboxListeners();
+    }
+
+    addCheckboxListeners() {
+
+
+        
+
+        document.querySelector(".check-all-entity").addEventListener('change', (event) => {
+            let checked = event.target.checked;
+            let allEntities = document.querySelectorAll(".selected-entity");
+            if(allEntities)
+            {
+                allEntities.forEach((entity, index) => {
+                    entity.checked = checked;
+                })
+            }
+            this.exportToSQL();
+        });
+
+        document.querySelector("#table-list").addEventListener('change', (event) => {
+            if (event.target.classList.contains('selected-entity')) {
+                this.exportToSQL();
+            }
+        });
     }
 
     showEditor(entityIndex = -1) {
@@ -202,11 +227,20 @@ class EntityEditor {
 
         this.renderEntities();
         this.cancelEdit();
+        this.exportToSQL();
     }
 
     renderEntities() {
         const container = document.querySelector("#entities-container");
         container.innerHTML = '';
+        const selectedEntity = [];
+        const selectedEntities = document.querySelectorAll('.selected-entity:checked');
+        if(selectedEntities)
+        {
+            selectedEntities.forEach(checkbox => {
+                selectedEntity.push(checkbox.getAttribute('data-name'));
+            });
+        }
 
         const tabelList = document.querySelector("#table-list");
         tabelList.innerHTML = '';
@@ -232,11 +266,20 @@ class EntityEditor {
             
             let entityCb = document.createElement('li');
             entityCb.innerHTML = `
-            <label><input type="checkbox" class="selected-entity" value="${index}" />${entity.name}</label>
+            <label><input type="checkbox" class="selected-entity" data-name="${entity.name}" value="${index}" />${entity.name}</label>
             `;
             
             tabelList.appendChild(entityCb);
         });
+
+        selectedEntity.forEach(value => {
+            let cb = document.querySelector(`input[data-name="${value}"]`);
+            if(cb)
+            {
+                cb.checked = true;
+            }
+        });
+        
     }
 
     editEntity(index) {
@@ -276,20 +319,30 @@ class EntityEditor {
 
     exportToSQL() {
         let sql = "";
-        this.entities.forEach(entity => {
-            sql += `-- Entity: ${entity.name}\n`;
-            sql += `CREATE TABLE IF NOT EXISTS ${entity.name} (\n`;
-
-            entity.columns.forEach(col => {
-                sql += `  ${col.toSQL()},\n`;
-            });
-
-            sql = sql.slice(0, -2); // Remove last comma
-            sql += "\n);\n\n";
+        
+        const selectedEntities = document.querySelectorAll('.selected-entity:checked');
+    
+        selectedEntities.forEach((checkbox, index) => {
+            const entityIndex = parseInt(checkbox.value); 
+            const entity = this.entities[entityIndex]; 
+    
+            if (entity) {
+                sql += `-- Entity ${entityIndex + 1}: ${entity.name}\n`;
+                sql += `CREATE TABLE IF NOT EXISTS ${entity.name} (\n`;
+                let cols = [];
+                entity.columns.forEach((col, colIndex) => {
+                    cols.push(`  ${col.toSQL()}`);
+                });
+    
+                sql += cols.join("\r\n");
+                sql += "\n);\n\n";
+            }
         });
-
+    
+        document.querySelector('.query-generated').value = sql;
         console.log(sql);
     }
+    
 
     // Handle file import (for MySQL dump)
     importFromSQL() {

@@ -18,16 +18,15 @@
         </div>
         <div class="resize-bar"></div>
         <div class="right-panel">
-            <div class="entity-selector"><label> <input type="checkbox" name="check-all-entity"> Export all</label></div>
+            <div class="entity-selector"><label> <input type="checkbox" class="check-all-entity"> Export all</label></div>
             <ul id="table-list"></ul>
-            <textarea name="" id=""></textarea>
+            <textarea class="query-generated" spellcheck="false"></textarea>
         </div>
     </div>
     
 
     <div class="button-container">
         <button onclick="editor.showEditor(-1)">Create New Entity</button>
-        <button onclick="editor.exportToSQL()">Export to SQL</button>
         <button onclick="editor.importFromSQL()">Import from SQL</button>
         <input type="file" id="file-import" style="display:none;" onchange="editor.handleFileImport(event)">    
     </div>

@@ -63,12 +63,11 @@ class ResizablePanels {
         document.removeEventListener('mouseup', () => this.stopResizing());
     }
 
-    loadPanelWidth() {
-        let savedLeftPanelWidth = localStorage.getItem('leftPanelWidth');
-        
+    doResize(savedLeftPanelWidth)
+    {
         if (savedLeftPanelWidth) {
             // If a saved width exists, apply it
-            const leftPanelWidth = parseInt(savedLeftPanelWidth, 10);
+            let leftPanelWidth = parseInt(savedLeftPanelWidth, 10);
             let parentNode = this.leftPanel.parentNode;
             let parentWidth = parentNode.offsetWidth;
             let rightPanelWidth = parentWidth - leftPanelWidth - 10;
@@ -85,25 +84,15 @@ class ResizablePanels {
         }
     }
 
+    loadPanelWidth() {
+        let savedLeftPanelWidth = localStorage.getItem('leftPanelWidth');
+        this.doResize(savedLeftPanelWidth);
+        
+    }
+
     onWindowResize() {
         // Recalculate the panel widths based on the new window size
         let savedLeftPanelWidth = localStorage.getItem('leftPanelWidth');
-        
-        if (savedLeftPanelWidth) {
-            let leftPanelWidth = parseInt(savedLeftPanelWidth, 10);
-            let parentNode = this.leftPanel.parentNode;
-            let parentWidth = parentNode.offsetWidth;
-            let rightPanelWidth = parentWidth - leftPanelWidth - 10;
-
-            // If right panel width becomes less than minWidth, adjust left panel width
-            if (rightPanelWidth < this.minWidth) {
-                rightPanelWidth = this.minWidth;
-                leftPanelWidth = parentWidth - rightPanelWidth - 10;
-            }
-
-            // Adjust the panels
-            this.leftPanel.style.width = leftPanelWidth + 'px';
-            this.rightPanel.style.width = rightPanelWidth + 'px';
-        }
+        this.doResize(savedLeftPanelWidth);
     }
 }
