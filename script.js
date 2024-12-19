@@ -71,7 +71,25 @@ class EntityEditor {
             document.getElementById("columns-table-body").innerHTML = '';
             entity.columns.forEach(col => this.addColumnToTable(col));
         } else {
-            document.getElementById("entity-name").value = 'new_table';
+            this.currentEntityIndex = -1;
+            let newTableName = 'new_table';
+            for(let i in this.entities)
+            { 
+                let duplicated = false;
+                for(let j in this.entities)
+                {
+                    newTableName = `new_table_${parseInt(i)+2}`;
+                    if(newTableName.toLowerCase() == this.entities[j].name.toLowerCase())
+                    {
+                        duplicated = true;
+                    }
+                }
+                if(!duplicated)
+                {
+                    break;
+                }
+            }
+            document.getElementById("entity-name").value = newTableName;
             document.getElementById("columns-table-body").innerHTML = '';
         }
         document.getElementById("editor-form").style.display = "block";
@@ -83,6 +101,11 @@ class EntityEditor {
 
         let typeSimple = column.type.split('(')[0].trim();
         row.innerHTML = `
+            <td class="column-action">
+                <button onclick="editor.removeColumn(this)">❌</button>
+                <button onclick="editor.moveUp(this)">⬆️</button>
+                <button onclick="editor.moveDown(this)">⬇️</button>    
+            </td>
             <td><input type="text" class="column-name" value="${column.name}" placeholder="Column Name"></td>
             <td>
                 <select class="column-type" onchange="editor.updateColumnLengthInput(this)">
@@ -95,7 +118,6 @@ class EntityEditor {
             <td><input type="checkbox" class="column-nullable" ${column.nullable ? 'checked' : ''}></td>
             <td><input type="checkbox" class="column-primaryKey" ${column.primaryKey ? 'checked' : ''}></td>
             <td><input type="checkbox" class="column-autoIncrement" ${column.autoIncrement ? 'checked' : ''}></td>
-            <td class="column-action"><button onclick="editor.removeColumn(this)">❌</button></td>
         `;
         
         tableBody.appendChild(row);
@@ -104,7 +126,7 @@ class EntityEditor {
     addColumn() {
         const entityName = document.querySelector('#entity-name').value;
         let count = document.querySelectorAll('.column-name').length;
-        let countStr = count > 0 ? count : '';
+        let countStr = count <= 0 ? '' : count + 1;
         const column = new Column(`${entityName}_col${countStr}`);
         this.addColumnToTable(column);
     }
@@ -112,6 +134,24 @@ class EntityEditor {
     removeColumn(button) {
         const row = button.closest("tr");
         row.remove();
+    }
+    
+    moveUp(button) {
+        const row = button.closest("tr");
+        const tableBody = document.getElementById("columns-table-body");
+        const previousRow = row.previousElementSibling;
+        if (previousRow) {
+            tableBody.insertBefore(row, previousRow);
+        }
+    }
+
+    moveDown(button) {
+        const row = button.closest("tr");
+        const tableBody = document.getElementById("columns-table-body");
+        const nextRow = row.nextElementSibling;
+        if (nextRow) {
+            tableBody.insertBefore(nextRow, row);
+        }
     }
 
     saveEntity() {
@@ -214,6 +254,46 @@ class EntityEditor {
         } else {
             enumInput.style.display = "none";
         }
+    }
+    
+    exportToSQL() {
+        let sql = "";
+        this.entities.forEach(entity => {
+            sql += `-- Entity: ${entity.name}\n`;
+            sql += `CREATE TABLE IF NOT EXISTS ${entity.name} (\n`;
+    
+            entity.columns.forEach(col => {
+                let columnDef = `${col.name} ${col.type}`;
+                if (col.nullable) columnDef += " NULL";
+                else columnDef += " NOT NULL";
+                if (col.primaryKey) columnDef += " PRIMARY KEY";
+                if (col.autoIncrement) columnDef += " AUTO_INCREMENT";
+                if (col.default) columnDef += ` DEFAULT ${col.default}`;
+                sql += `  ${columnDef},\n`;
+            });
+    
+            sql = sql.slice(0, -2); // Remove last comma
+            sql += "\n);\n\n";
+        });
+    
+        console.log(sql);
+    }
+    
+    // Handle file import (for MySQL dump)
+    importFromSQL() {
+        document.getElementById('file-import').click();
+    }
+    
+    handleFileImport(event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+    
+        reader.onload = function() {
+            const content = reader.result;
+            console.log(content);
+        };
+    
+        reader.readAsText(file);
     }
 }
 

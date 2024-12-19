@@ -48,6 +48,9 @@ select {
   border-collapse: collapse;
   border: 1px solid #ccc;
 }
+#editor-form table .column-mover {
+  width: 16px;
+}
 #editor-form table thead {
   background-color: #f1f1f1;
   border: 1px solid #ccc;
@@ -115,7 +118,8 @@ input[type=checkbox] {
   min-width: 160px;
   border: 1px solid #DDDDDD;
   vertical-align: top;
-  margin-right: 16px;
+  margin-right: 10px;
+  margin-bottom: 10px;
   padding: 0;
   background-color: #FCFCFC;
 }
