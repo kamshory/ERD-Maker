@@ -13,18 +13,18 @@
     </div>
 
     <div class="button-container">
-        <button onclick="showEditor()">Create New Entity</button>
-        <button onclick="exportToSQL()">Export to SQL</button>
-        <button onclick="importFromSQL()">Import from SQL</button>
+        <button onclick="editor.showEditor()">Create New Entity</button>
+        <button onclick="editor.exportToSQL()">Export to SQL</button>
+        <button onclick="editor.importFromSQL()">Import from SQL</button>
         <input type="file" id="file-import" style="display:none;" onchange="handleFileImport(event)">    
     </div>
 
     <!-- Entity Editor Form -->
     <div id="editor-form" style="display:none;">
         <input type="text" id="entity-name" placeholder="Enter entity name">
-        <button onclick="addColumn()">Add Column</button>
-        <button onclick="saveEntity()">Save Entity</button>
-        <button onclick="cancelEdit()">Cancel</button>
+        <button onclick="editor.addColumn()">Add Column</button>
+        <button onclick="editor.saveEntity()">Save Entity</button>
+        <button onclick="editor.cancelEdit()">Cancel</button>
         <div class="table-container">
         <table id="columns-table">
             <thead>
