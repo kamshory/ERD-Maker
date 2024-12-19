@@ -51,6 +51,15 @@ select {
 #editor-form table .column-mover {
   width: 16px;
 }
+#editor-form table .column-action {
+  text-align: center;
+  white-space: nowrap;
+  width: 50px;
+}
+#editor-form table .column-action button {
+  font-size: 13px;
+  margin-bottom: 2px;
+}
 #editor-form table thead {
   background-color: #f1f1f1;
   border: 1px solid #ccc;
@@ -63,10 +72,6 @@ select {
   padding: 8px;
   text-align: left;
   z-index: 2;
-}
-#editor-form table th.column-action {
-  text-align: center;
-  font-size: 11px;
 }
 #editor-form table th::before {
   content: "";
@@ -83,12 +88,6 @@ select {
   padding: 0px;
   text-align: left;
   font-size: 8px;
-}
-#editor-form table td.column-action {
-  text-align: center;
-}
-#editor-form table td.column-action button {
-  font-size: 11px;
 }
 #editor-form table td input[type=text],
 #editor-form table td select {

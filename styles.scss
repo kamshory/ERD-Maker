@@ -56,6 +56,19 @@ select {
         width: 100%;
         border-collapse: collapse;
         border: 1px solid #ccc;
+        
+        
+        .column-action {
+            text-align: center;
+            white-space: nowrap;
+            width: 50px;
+            button {
+
+                font-size: 13px;
+                margin-bottom: 2px;
+            }
+        }
+        
         thead {
             background-color: #f1f1f1; 
             border: 1px solid #ccc;
@@ -72,10 +85,7 @@ select {
             text-align: left;
             z-index: 2; 
 
-            &.column-action {
-                text-align: center;
-                font-size: 11px;
-            }
+        
             &::before{
                 content: "";
                 width: 100%;
@@ -94,14 +104,7 @@ select {
             text-align: left;
             font-size: 8px;
 
-            &.column-action {
-                text-align: center;
-
-                button {
-
-                    font-size: 11px;
-                }
-            }
+            
 
             input[type="text"],
             select {

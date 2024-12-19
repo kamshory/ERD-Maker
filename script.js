@@ -79,8 +79,8 @@ class EntityEditor {
         if (entityIndex >= 0) {
             this.currentEntityIndex = entityIndex;
             const entity = this.entities[entityIndex];
-            document.getElementById("entity-name").value = entity.name;
-            document.getElementById("columns-table-body").innerHTML = '';
+            document.querySelector("#entity-name").value = entity.name;
+            document.querySelector("#columns-table-body").innerHTML = '';
             entity.columns.forEach(col => this.addColumnToTable(col));
         } else {
             this.currentEntityIndex = -1;
@@ -97,14 +97,14 @@ class EntityEditor {
                     break;
                 }
             }
-            document.getElementById("entity-name").value = newTableName;
-            document.getElementById("columns-table-body").innerHTML = '';
+            document.querySelector("#entity-name").value = newTableName;
+            document.querySelector("#columns-table-body").innerHTML = '';
         }
-        document.getElementById("editor-form").style.display = "block";
+        document.querySelector("#editor-form").style.display = "block";
     }
 
     addColumnToTable(column) {
-        const tableBody = document.getElementById("columns-table-body");
+        const tableBody = document.querySelector("#columns-table-body");
         const row = document.createElement("tr");
 
         let typeSimple = column.type.split('(')[0].trim();
@@ -146,7 +146,7 @@ class EntityEditor {
 
     moveUp(button) {
         const row = button.closest("tr");
-        const tableBody = document.getElementById("columns-table-body");
+        const tableBody = document.querySelector("#columns-table-body");
         const previousRow = row.previousElementSibling;
         if (previousRow) {
             tableBody.insertBefore(row, previousRow);
@@ -155,7 +155,7 @@ class EntityEditor {
 
     moveDown(button) {
         const row = button.closest("tr");
-        const tableBody = document.getElementById("columns-table-body");
+        const tableBody = document.querySelector("#columns-table-body");
         const nextRow = row.nextElementSibling;
         if (nextRow) {
             tableBody.insertBefore(nextRow, row);
@@ -163,7 +163,7 @@ class EntityEditor {
     }
 
     saveEntity() {
-        const entityName = document.getElementById("entity-name").value;
+        const entityName = document.querySelector("#entity-name").value;
         const columns = [];
         const columnNames = document.querySelectorAll(".column-name");
         const columnTypes = document.querySelectorAll(".column-type");
@@ -205,7 +205,7 @@ class EntityEditor {
     }
 
     renderEntities() {
-        const container = document.getElementById("entities-container");
+        const container = document.querySelector("#entities-container");
         container.innerHTML = '';
 
         this.entities.forEach((entity, index) => {
@@ -239,7 +239,7 @@ class EntityEditor {
     }
 
     cancelEdit() {
-        document.getElementById("editor-form").style.display = "none";
+        document.querySelector("#editor-form").style.display = "none";
     }
 
     updateColumnLengthInput(selectElement) {
@@ -282,7 +282,7 @@ class EntityEditor {
 
     // Handle file import (for MySQL dump)
     importFromSQL() {
-        document.getElementById('file-import').click();
+        document.querySelector("#file-import").click();
     }
 
     handleFileImport(event) {
