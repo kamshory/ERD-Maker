@@ -4,7 +4,8 @@
   box-sizing: border-box;
 }
 
-body, html {
+body,
+html {
   height: 100%;
   width: 100%;
 }
@@ -16,39 +17,40 @@ body {
   padding: 0;
 }
 
-#entities-container {
+.entity-editor {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+.entity-editor #entities-container {
   margin: 0;
   height: calc(100vh - 350px);
   min-height: 200px;
   overflow: auto;
 }
-
-.container {
+.entity-editor .container {
   display: flex;
   width: 100%;
   overflow: hidden;
 }
-
-.left-panel, .right-panel {
+.entity-editor .left-panel,
+.entity-editor .right-panel {
   overflow: auto;
   padding: 10px;
   border: 1px solid #ccc;
 }
-
-.resize-bar {
+.entity-editor .resize-bar {
   width: 10px;
   cursor: ew-resize;
 }
-
-.left-panel {
+.entity-editor .left-panel {
   width: calc(70% - 5px);
 }
-
-.right-panel {
+.entity-editor .right-panel {
   width: calc(30% - 5px);
   background-color: #f4f4f4;
 }
-.right-panel textarea {
+.entity-editor .right-panel textarea {
   height: calc(100vh - 445px);
   min-height: 100px;
   width: 100%;
@@ -56,62 +58,58 @@ body {
   box-sizing: border-box;
   resize: none;
 }
-.right-panel textarea:focus-visible {
+.entity-editor .right-panel textarea:focus-visible {
   outline: none;
 }
-
-.button-container {
+.entity-editor .button-container {
   padding: 10px 10px 0;
 }
-
-button {
+.entity-editor button {
   padding: 5px 12px;
   margin-bottom: 5px;
   cursor: pointer;
 }
-
-input[type=text],
-select {
+.entity-editor input[type=text],
+.entity-editor select {
   padding: 5px 10px;
   background-color: #FFFFFF;
   border: 1px solid #999999;
   color: #333333;
 }
-
-#editor-form {
+.entity-editor #editor-form {
   margin-top: 5px;
   padding: 10px;
   border-top: 1px solid #DDD;
 }
-#editor-form h3 {
+.entity-editor #editor-form h3 {
   margin: 0;
 }
-#editor-form .table-container {
+.entity-editor #editor-form .table-container {
   max-height: 180px;
   overflow: auto;
 }
-#editor-form table {
+.entity-editor #editor-form table {
   width: 100%;
   border-collapse: collapse;
   border: 1px solid #ccc;
 }
-#editor-form table .column-mover {
+.entity-editor #editor-form table .column-mover {
   width: 16px;
 }
-#editor-form table .column-action {
+.entity-editor #editor-form table .column-action {
   text-align: center;
   white-space: nowrap;
   width: 64px;
 }
-#editor-form table .column-action button {
+.entity-editor #editor-form table .column-action button {
   font-size: 13px;
   margin-bottom: 2px;
 }
-#editor-form table thead {
+.entity-editor #editor-form table thead {
   background-color: #f1f1f1;
   border: 1px solid #ccc;
 }
-#editor-form table th {
+.entity-editor #editor-form table th {
   border: 1px solid #ccc;
   position: sticky;
   top: 0;
@@ -120,7 +118,7 @@ select {
   text-align: left;
   z-index: 2;
 }
-#editor-form table th::before {
+.entity-editor #editor-form table th::before {
   content: "";
   width: 100%;
   display: block;
@@ -130,21 +128,21 @@ select {
   top: -1px;
   left: 0;
 }
-#editor-form table th.column-nl, #editor-form table th.column-pk, #editor-form table th.column-ai {
+.entity-editor #editor-form table th.column-nl, .entity-editor #editor-form table th.column-pk, .entity-editor #editor-form table th.column-ai {
   width: 20px;
   text-align: center;
 }
-#editor-form table td {
+.entity-editor #editor-form table td {
   border: 1px solid #ccc;
   padding: 0;
   text-align: left;
   font-size: 8px;
 }
-#editor-form table td.column-nl, #editor-form table td.column-pk, #editor-form table td.column-ai {
+.entity-editor #editor-form table td.column-nl, .entity-editor #editor-form table td.column-pk, .entity-editor #editor-form table td.column-ai {
   text-align: center;
 }
-#editor-form table td input[type=text],
-#editor-form table td select {
+.entity-editor #editor-form table td input[type=text],
+.entity-editor #editor-form table td select {
   display: block;
   margin: 0;
   border: none;
@@ -152,21 +150,19 @@ select {
   box-sizing: border-box;
   padding: 1px 8px;
 }
-#editor-form table td input[type=text]:focus-visible,
-#editor-form table td select:focus-visible {
+.entity-editor #editor-form table td input[type=text]:focus-visible,
+.entity-editor #editor-form table td select:focus-visible {
   outline: none;
 }
-#editor-form table td button {
+.entity-editor #editor-form table td button {
   padding: 0;
   border: none;
   background-color: transparent;
 }
-
-input[type=checkbox] {
+.entity-editor input[type=checkbox] {
   margin: 0 5px;
 }
-
-.entity {
+.entity-editor .entity {
   display: inline-block;
   min-width: 160px;
   border: 1px solid #DDDDDD;
@@ -176,10 +172,10 @@ input[type=checkbox] {
   padding: 0;
   background-color: #FCFCFC;
 }
-.entity .entity-header {
+.entity-editor .entity .entity-header {
   background-color: #EEEEEE;
 }
-.entity .entity-header button {
+.entity-editor .entity .entity-header button {
   float: right;
   width: 16px;
   height: 16px;
@@ -190,24 +186,24 @@ input[type=checkbox] {
   margin-right: 6px;
   margin-top: 2px;
 }
-.entity .entity-header h4 {
+.entity-editor .entity .entity-header h4 {
   margin: 0;
   padding: 5px 50px 5px 10px;
   border-bottom: 1px solid #DDDDDD;
 }
-.entity .entity-body ul {
+.entity-editor .entity .entity-body ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
 }
-.entity .entity-body ul li {
+.entity-editor .entity .entity-body ul li {
   padding: 4px 10px;
   border-bottom: 1px solid #DDDDDD;
 }
-.entity .entity-body ul li:last-child {
+.entity-editor .entity .entity-body ul li:last-child {
   border-bottom: none;
 }
-.entity .entity-body ul li .data-type {
+.entity-editor .entity .entity-body ul li .data-type {
   background-color: #E4E4E4;
   padding: 2px 5px;
   font-size: 10px;
@@ -215,15 +211,14 @@ input[type=checkbox] {
   margin-left: 8px;
   border-radius: 2px;
 }
-.entity .entity-footer {
+.entity-editor .entity .entity-footer {
   padding: 5px 10px;
   display: none;
 }
-.entity .entity-footer button {
+.entity-editor .entity .entity-footer button {
   margin-bottom: 0;
 }
-
-#table-list {
+.entity-editor #table-list {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -231,11 +226,11 @@ input[type=checkbox] {
   height: 80px;
   overflow: auto;
 }
-#table-list li {
+.entity-editor #table-list li {
   padding: 0;
   margin: 0;
   line-height: 1.5;
 }
-#table-list li label {
+.entity-editor #table-list li label {
   padding: 0;
 }/*# sourceMappingURL=styles.css.map */

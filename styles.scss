@@ -16,7 +16,8 @@ $select-padding: 5px 10px;
     box-sizing: border-box;
 }
 
-body, html {
+body,
+html {
     height: 100%;
     width: 100%;
 }
@@ -28,267 +29,276 @@ body {
     padding: 0;
 }
 
-// Container untuk entities
-#entities-container {
-    margin: 0;
-    height: calc(100vh - 350px);
-    min-height: 200px;
-    overflow: auto;
-}
-
-// Container utama
-.container {
-    display: flex;
+.entity-editor {
+    height: 100%;
     width: 100%;
-    overflow: hidden;
-}
-
-// Panel kiri dan kanan
-.left-panel, .right-panel {
-    overflow: auto;
-    padding: 10px;
-    border: $panel-border;
-}
-
-.resize-bar {
-    width: 10px;
-    cursor: ew-resize;
-}
-
-// Ukuran panel
-.left-panel {
-    width: calc(70% - 5px);
-}
-
-.right-panel {
-    width: calc(30% - 5px);
-    background-color: $primary-bg-color;
-    textarea
-    {
-        height: calc(100vh - 445px);
-        min-height: 100px;
-        width: 100%;
-        padding: 10px;
-        box-sizing: border-box;
-        resize: none;
-        &:focus-visible{
-            outline: none;
-        }
-    }
-}
-
-// Button container
-.button-container {
-    padding: 10px 10px 0;
-}
-
-// Button styling
-button {
-    padding: $button-padding;
-    margin-bottom: 5px;
-    cursor: pointer;
-}
-
-// Input dan select styling
-input[type="text"],
-select {
-    padding: $input-padding;
-    background-color: #FFFFFF;
-    border: 1px solid #999999;
-    color: #333333;
-}
-
-// Form editor
-#editor-form {
-    margin-top: 5px;
-    padding: 10px;
-    border-top: 1px solid #DDD;
-
-    h3 {
+    position: relative;
+    // Container untuk entities
+    #entities-container {
         margin: 0;
-    }
-
-    .table-container {
-        max-height: 180px;
+        height: calc(100vh - 350px);
+        min-height: 200px;
         overflow: auto;
     }
 
-    table {
+    // Container utama
+    .container {
+        display: flex;
         width: 100%;
-        border-collapse: collapse;
+        overflow: hidden;
+    }
+
+    // Panel kiri dan kanan
+    .left-panel,
+    .right-panel {
+        overflow: auto;
+        padding: 10px;
         border: $panel-border;
+    }
 
-        .column-mover {
-            width: 16px;
-        }
+    .resize-bar {
+        width: 10px;
+        cursor: ew-resize;
+    }
 
-        .column-action {
-            text-align: center;
-            white-space: nowrap;
-            width: 64px;
+    // Ukuran panel
+    .left-panel {
+        width: calc(70% - 5px);
+    }
 
-            button {
-                font-size: 13px;
-                margin-bottom: 2px;
-            }
-        }
+    .right-panel {
+        width: calc(30% - 5px);
+        background-color: $primary-bg-color;
 
-        thead {
-            background-color: $light-bg-color;
-            border: $panel-border;
-        }
+        textarea {
+            height: calc(100vh - 445px);
+            min-height: 100px;
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            resize: none;
 
-        th {
-            border: $panel-border;
-            position: sticky;
-            top: 0;
-            background-color: $light-bg-color;
-            padding: 8px;
-            text-align: left;
-            z-index: 2;
-
-            &::before {
-                content: "";
-                width: 100%;
-                display: block;
-                position: absolute;
-                height: 1px;
-                background-color: #ccc;
-                top: -1px;
-                left: 0;
-            }
-            
-            &.column-nl, &.column-pk, &.column-ai
-            {
-                width: 20px;
-                text-align: center;
-            }
-        }
-
-        td {
-            border: $panel-border;
-            padding: 0;
-            text-align: left;
-            font-size: 8px;
-            
-            &.column-nl, &.column-pk, &.column-ai
-            {
-                text-align: center;
-            }
-
-            input[type="text"],
-            select {
-                display: block;
-                margin: 0;
-                border: none;
-                width: 100%;
-                box-sizing: border-box;
-                padding: 1px 8px;
-            }
-
-            input[type="text"]:focus-visible,
-            select:focus-visible {
+            &:focus-visible {
                 outline: none;
             }
+        }
+    }
 
-            button {
+    // Button container
+    .button-container {
+        padding: 10px 10px 0;
+    }
+
+    // Button styling
+    button {
+        padding: $button-padding;
+        margin-bottom: 5px;
+        cursor: pointer;
+    }
+
+    // Input dan select styling
+    input[type="text"],
+    select {
+        padding: $input-padding;
+        background-color: #FFFFFF;
+        border: 1px solid #999999;
+        color: #333333;
+    }
+
+    // Form editor
+    #editor-form {
+        margin-top: 5px;
+        padding: 10px;
+        border-top: 1px solid #DDD;
+
+        h3 {
+            margin: 0;
+        }
+
+        .table-container {
+            max-height: 180px;
+            overflow: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: $panel-border;
+
+            .column-mover {
+                width: 16px;
+            }
+
+            .column-action {
+                text-align: center;
+                white-space: nowrap;
+                width: 64px;
+
+                button {
+                    font-size: 13px;
+                    margin-bottom: 2px;
+                }
+            }
+
+            thead {
+                background-color: $light-bg-color;
+                border: $panel-border;
+            }
+
+            th {
+                border: $panel-border;
+                position: sticky;
+                top: 0;
+                background-color: $light-bg-color;
+                padding: 8px;
+                text-align: left;
+                z-index: 2;
+
+                &::before {
+                    content: "";
+                    width: 100%;
+                    display: block;
+                    position: absolute;
+                    height: 1px;
+                    background-color: #ccc;
+                    top: -1px;
+                    left: 0;
+                }
+
+                &.column-nl,
+                &.column-pk,
+                &.column-ai {
+                    width: 20px;
+                    text-align: center;
+                }
+            }
+
+            td {
+                border: $panel-border;
                 padding: 0;
-                border: none;
-                background-color: transparent;
+                text-align: left;
+                font-size: 8px;
+
+                &.column-nl,
+                &.column-pk,
+                &.column-ai {
+                    text-align: center;
+                }
+
+                input[type="text"],
+                select {
+                    display: block;
+                    margin: 0;
+                    border: none;
+                    width: 100%;
+                    box-sizing: border-box;
+                    padding: 1px 8px;
+                }
+
+                input[type="text"]:focus-visible,
+                select:focus-visible {
+                    outline: none;
+                }
+
+                button {
+                    padding: 0;
+                    border: none;
+                    background-color: transparent;
+                }
             }
         }
     }
-}
 
-// Checkbox styling
-input[type="checkbox"] {
-    margin: 0 5px;
-}
+    // Checkbox styling
+    input[type="checkbox"] {
+        margin: 0 5px;
+    }
 
-// Entity styling
-.entity {
-    display: inline-block;
-    min-width: 160px;
-    border: 1px solid #DDDDDD;
-    vertical-align: top;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    padding: 0;
-    background-color: #FCFCFC;
+    // Entity styling
+    .entity {
+        display: inline-block;
+        min-width: 160px;
+        border: 1px solid #DDDDDD;
+        vertical-align: top;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        padding: 0;
+        background-color: #FCFCFC;
 
-    .entity-header {
-        background-color: #EEEEEE;
+        .entity-header {
+            background-color: #EEEEEE;
 
-        button {
-            float: right;
-            width: 16px;
-            height: 16px;
-            border: none;
-            background-color: transparent;
-            font-size: 11px;
-            padding: 2px;
-            margin-right: 6px;
-            margin-top: 2px;
+            button {
+                float: right;
+                width: 16px;
+                height: 16px;
+                border: none;
+                background-color: transparent;
+                font-size: 11px;
+                padding: 2px;
+                margin-right: 6px;
+                margin-top: 2px;
+            }
+
+            h4 {
+                margin: 0;
+                padding: 5px 50px 5px 10px;
+                border-bottom: 1px solid #DDDDDD;
+            }
         }
 
-        h4 {
+        .entity-body ul {
+            list-style-type: none;
             margin: 0;
-            padding: 5px 50px 5px 10px;
-            border-bottom: 1px solid #DDDDDD;
-        }
-    }
-
-    .entity-body ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-    }
-
-    .entity-body ul li {
-        padding: 4px 10px;
-        border-bottom: 1px solid #DDDDDD;
-    }
-
-    .entity-body ul li:last-child {
-        border-bottom: none;
-    }
-
-    .entity-body ul li .data-type {
-        background-color: #E4E4E4;
-        padding: 2px 5px;
-        font-size: 10px;
-        float: right;
-        margin-left: 8px;
-        border-radius: 2px;
-    }
-
-    .entity-footer {
-        padding: 5px 10px;
-        display: none;
-    }
-
-    .entity-footer button {
-        margin-bottom: 0;
-    }
-}
-
-#table-list
-{
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    margin: 2px 0 10px 0;
-    height: 80px;
-    overflow: auto;
-    
-    li{
-        padding: 0;
-        margin: 0;
-        label
-        {
             padding: 0;
         }
-        line-height: 1.5;
-    }
-}
 
+        .entity-body ul li {
+            padding: 4px 10px;
+            border-bottom: 1px solid #DDDDDD;
+        }
+
+        .entity-body ul li:last-child {
+            border-bottom: none;
+        }
+
+        .entity-body ul li .data-type {
+            background-color: #E4E4E4;
+            padding: 2px 5px;
+            font-size: 10px;
+            float: right;
+            margin-left: 8px;
+            border-radius: 2px;
+        }
+
+        .entity-footer {
+            padding: 5px 10px;
+            display: none;
+        }
+
+        .entity-footer button {
+            margin-bottom: 0;
+        }
+    }
+
+    #table-list {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        margin: 2px 0 10px 0;
+        height: 80px;
+        overflow: auto;
+
+        li {
+            padding: 0;
+            margin: 0;
+
+            label {
+                padding: 0;
+            }
+
+            line-height: 1.5;
+        }
+    }
+
+}

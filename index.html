@@ -10,54 +10,56 @@
 </head>
 <body>
 
-    <div class="container">
-        <div class="left-panel">
-            <div id="entities-container">
-                <!-- Entities will be rendered here -->
+    <div class="entity-editor">
+        <div class="container">
+            <div class="left-panel">
+                <div id="entities-container">
+                    <!-- Entities will be rendered here -->
+                </div>
+            </div>
+            <div class="resize-bar"></div>
+            <div class="right-panel">
+                <div class="entity-selector"><label> <input type="checkbox" class="check-all-entity"> Export all</label></div>
+                <ul id="table-list"></ul>
+                <textarea class="query-generated" spellcheck="false"></textarea>
             </div>
         </div>
-        <div class="resize-bar"></div>
-        <div class="right-panel">
-            <div class="entity-selector"><label> <input type="checkbox" class="check-all-entity"> Export all</label></div>
-            <ul id="table-list"></ul>
-            <textarea class="query-generated" spellcheck="false"></textarea>
+        
+
+        <div class="button-container">
+            <button onclick="editor.showEditor(-1)">Create New Entity</button>
+            <button onclick="editor.importFromSQL()">Import from SQL</button>
+            <input type="file" id="file-import" style="display:none;" onchange="editor.handleFileImport(event)">    
         </div>
-    </div>
-    
 
-    <div class="button-container">
-        <button onclick="editor.showEditor(-1)">Create New Entity</button>
-        <button onclick="editor.importFromSQL()">Import from SQL</button>
-        <input type="file" id="file-import" style="display:none;" onchange="editor.handleFileImport(event)">    
-    </div>
+        <!-- Entity Editor Form -->
+        <div id="editor-form" style="display:none;">
+            <input type="text" id="entity-name" placeholder="Enter entity name">
+            <button onclick="editor.addColumn(true)">Add Column</button>
+            <button onclick="editor.saveEntity()">Save Entity</button>
+            <button onclick="editor.cancelEdit()">Cancel</button>
+            <div class="table-container">
+            <table id="columns-table">
+                <thead>
+                    <tr>
+                        <th class="column-action"></th>
+                        <th>Column Name</th>
+                        <th>Type</th>
+                        <th>Length</th>
+                        <th>Value</th>
+                        <th>Default</th>
+                        <th class="column-nl">NL</th>
+                        <th class="column-pk">PK</th>
+                        <th class="column-ai">AI</th>
+                    </tr>
+                </thead>
+                <tbody id="columns-table-body">
+                    <!-- Columns will be dynamically inserted here -->
+                </tbody>
+            </table>
+        </div>
 
-    <!-- Entity Editor Form -->
-    <div id="editor-form" style="display:none;">
-        <input type="text" id="entity-name" placeholder="Enter entity name">
-        <button onclick="editor.addColumn(true)">Add Column</button>
-        <button onclick="editor.saveEntity()">Save Entity</button>
-        <button onclick="editor.cancelEdit()">Cancel</button>
-        <div class="table-container">
-        <table id="columns-table">
-            <thead>
-                <tr>
-                    <th class="column-action"></th>
-                    <th>Column Name</th>
-                    <th>Type</th>
-                    <th>Length</th>
-                    <th>Value</th>
-                    <th>Default</th>
-                    <th class="column-nl">NL</th>
-                    <th class="column-pk">PK</th>
-                    <th class="column-ai">AI</th>
-                </tr>
-            </thead>
-            <tbody id="columns-table-body">
-                <!-- Columns will be dynamically inserted here -->
-            </tbody>
-        </table>
-    </div>
-
+        </div>
     </div>
 
  
