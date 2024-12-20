@@ -1,5 +1,6 @@
 class Column {
-    constructor(name, type = "VARCHAR", nullable = false, defaultValue = "", primaryKey = false, autoIncrement = false, enumValues = "", length = "") {
+    constructor(name, type = "VARCHAR", nullable = false, defaultValue = "", primaryKey = false, autoIncrement = false, enumValues = "", length = "") //NOSONAR
+    {
         this.name = name;
         this.type = type;
         this.nullable = nullable;
@@ -12,26 +13,42 @@ class Column {
 
     toSQL() {
         let columnDef = `${this.name} ${this.type}`;
-        let nullable = false;
+        
+        // If the type is ENUM or SET, handle them similarly
+        if ((this.type === 'ENUM' || this.type === 'SET') && this.enumValues) {
+            const enumList = this.enumValues.split(',').map(val => `'${val.trim()}'`).join(', ');
+            columnDef = `${this.name} ${this.type}(${enumList})`;
+        } else if (this.length) {
+            // For other types, add length if available
+            columnDef += `(${this.length})`;
+        }
+
+        // Nullable logic
         if (this.nullable && !this.primaryKey) {
             columnDef += " NULL";
-            nullable = true;
-        }
-        else {
+        } else {
             columnDef += " NOT NULL";
         }
+
+        // Primary key logic
         if (this.primaryKey) {
             columnDef += " PRIMARY KEY";
         }
+
+        // Auto increment logic
         if (this.autoIncrement) {
             columnDef += " AUTO_INCREMENT";
         }
-        if (this.default && (this.default.toLowerCase() != 'null' || nullable)) {
-            columnDef += ` DEFAULT ${this.default}`;
+
+        // Default value logic
+        if (this.default && this.default.toLowerCase() !== 'null') {
+            columnDef += ` DEFAULT '${this.default}'`;
         }
+
         return columnDef;
     }
 }
+
 
 class Entity {
     constructor(name) {
@@ -66,12 +83,18 @@ class EntityEditor {
         this.mysqlDataTypes = [
             'BIGINT', 'INT', 'MEDIUMINT', 'SMALLINT', 'TINYINT',
             'DOUBLE', 'DECIMAL', 'FLOAT', 'BIT',
-            'DATETIME', 'TIMESTAMP', 'DATE', 'TIME', 'YEAR',
-            'LONGTEXT', 'MEDIUMTEXT', 'TEXT', 'VARCHAR', 'CHAR', 'TINYTEXT',
+            'DATE', 'TIME', 'DATETIME', 'TIMESTAMP', 'YEAR',
+            'LONGTEXT', 'MEDIUMTEXT', 'TEXT', 'TINYTEXT', 'VARCHAR', 'CHAR',
             'ENUM', 'SET', 'JSON',
             'LONGBLOB', 'MEDIUMBLOB', 'BLOB', 'TINYBLOB',
             'UUID', 'VARBINARY', 'BINARY',
             'POLYGON', 'LINESTRING', 'POINT', 'GEOMETRY'
+        ];
+        this.typeWithLength = [
+            'VARCHAR', 'CHAR', 
+            'VARBINARY', 'BINARY',
+            'TINYINT', 'SMALLINT', 'MEDIUMINT', 'INT', 'INTEGER', 'BIGINT'
+
         ];
         this.addCheckboxListeners();
     }
@@ -123,7 +146,7 @@ class EntityEditor {
         document.querySelector("#editor-form").style.display = "block";
     }
 
-    addColumnToTable(column) {
+    addColumnToTable(column, focus = false) {
         const tableBody = document.querySelector("#columns-table-body");
         const row = document.createElement("tr");
 
@@ -140,8 +163,8 @@ class EntityEditor {
                     ${this.mysqlDataTypes.map(typeOption => `<option value="${typeOption}" ${typeOption === typeSimple ? 'selected' : ''}>${typeOption}</option>`).join('')}
                 </select>
             </td>
-            <td><input type="text" class="column-length" value="${column.length}" placeholder="Length" style="display: ${['VARCHAR', 'BIGINT', 'INT'].includes(typeSimple) ? 'inline' : 'none'};"></td>
-            <td><input type="text" class="column-enum" value="${column.enumValues}" placeholder="ENUM values (comma separated)" style="display: ${typeSimple === 'ENUM' ? 'inline' : 'none'};"></td>
+            <td><input type="text" class="column-length" value="${column.length}" placeholder="Length" style="display: ${this.typeWithLength.includes(typeSimple) ? 'inline' : 'none'};"></td>
+            <td><input type="text" class="column-enum" value="${column.enumValues}" placeholder="Values (comma separated)" style="display: ${typeSimple === 'ENUM' || typeSimple === 'SET' ? 'inline' : 'none'};"></td>
             <td><input type="text" class="column-default" value="${column.default}" placeholder="Default Value"></td>
             <td><input type="checkbox" class="column-nullable" ${column.nullable ? 'checked' : ''}></td>
             <td><input type="checkbox" class="column-primaryKey" ${column.primaryKey ? 'checked' : ''}></td>
@@ -149,14 +172,18 @@ class EntityEditor {
         `;
 
         tableBody.appendChild(row);
+        if(focus)
+        {
+            row.querySelector('.column-name').select();
+        }
     }
 
-    addColumn() {
+    addColumn(focus = false) {
         const entityName = document.querySelector('#entity-name').value;
         let count = document.querySelectorAll('.column-name').length;
         let countStr = count <= 0 ? '' : count + 1;
         const column = new Column(`${entityName}_col${countStr}`);
-        this.addColumnToTable(column);
+        this.addColumnToTable(column, focus);
     }
 
     removeColumn(button) {
@@ -299,14 +326,14 @@ class EntityEditor {
         const enumInput = row.querySelector(".column-enum");
 
         // Show length input for specific types
-        if (['VARCHAR', 'BIGINT', 'INT'].includes(columnType)) {
+        if (this.typeWithLength.includes(columnType)) {
             lengthInput.style.display = "inline";
         } else {
             lengthInput.style.display = "none";
         }
 
         // Show enum input for ENUM type
-        if (columnType === "ENUM") {
+        if (columnType === "ENUM" || columnType === "SET") {
             enumInput.style.display = "inline";
         } else {
             enumInput.style.display = "none";
