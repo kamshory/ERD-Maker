@@ -1,4 +1,23 @@
+/**
+ * Class representing a column in a database table.
+ * 
+ * The Column class is used to define a column for a database table, including 
+ * its name, type, nullable status, default value, primary key, auto-increment,
+ * and specific values for ENUM or SET types.
+ */
 class Column {
+    /**
+     * Creates an instance of the Column class.
+     * 
+     * @param {string} name - The name of the column.
+     * @param {string} [type="VARCHAR"] - The type of the column (e.g., "VARCHAR", "INT", "ENUM", etc.).
+     * @param {boolean} [nullable=false] - Whether the column can be NULL (default is false).
+     * @param {string} [defaultValue=""] - The default value for the column (optional).
+     * @param {boolean} [primaryKey=false] - Whether the column is a primary key (default is false).
+     * @param {boolean} [autoIncrement=false] - Whether the column auto-increments (default is false).
+     * @param {string} [enumValues=""] - The values for ENUM or SET types, if applicable (comma-separated).
+     * @param {string} [length=""] - The length of the column for types like VARCHAR (optional).
+     */
     constructor(name, type = "VARCHAR", nullable = false, defaultValue = "", primaryKey = false, autoIncrement = false, enumValues = "", length = "") //NOSONAR
     {
         this.name = name;
@@ -11,6 +30,15 @@ class Column {
         this.length = length;
     }
 
+    /**
+     * Converts the column definition into a valid SQL statement.
+     * 
+     * This method generates the SQL column definition as a string based on the column's
+     * properties such as its type, nullable status, primary key, auto-increment, default value,
+     * and for ENUM/SET types, the list of valid values.
+     * 
+     * @returns {string} The SQL column definition.
+     */
     toSQL() {
         let columnDef = `${this.name} ${this.type}`;
         
@@ -49,34 +77,75 @@ class Column {
     }
 }
 
-
+/**
+ * Class representing an entity (table) in a database.
+ * 
+ * The Entity class is used to define a database table, its name, and the columns 
+ * that belong to that table. It allows for adding, removing, and converting 
+ * the entity (with its columns) into a valid SQL `CREATE TABLE` statement.
+ */
 class Entity {
+    /**
+     * Creates an instance of the Entity class.
+     * 
+     * @param {string} name - The name of the entity (table).
+     */
     constructor(name) {
         this.name = name;
         this.columns = [];
     }
 
+    /**
+     * Adds a column to the entity.
+     * 
+     * @param {Column} column - An instance of the Column class to be added to the entity.
+     */
     addColumn(column) {
         this.columns.push(column);
     }
 
+    /**
+     * Removes a column from the entity.
+     * 
+     * @param {number} index - The index of the column to be removed from the entity's column list.
+     */
     removeColumn(index) {
         this.columns.splice(index, 1);
     }
 
+    /**
+     * Converts the entity (with its columns) into a valid SQL `CREATE TABLE` statement.
+     * 
+     * This method generates the SQL statement for creating a table, including the
+     * table's name and each of its columns' definitions as provided by the `Column` class.
+     * 
+     * @returns {string} The SQL statement for creating the entity (table).
+     */
     toSQL() {
-        let sql = `-- Entity: ${this.name}\n`;
-        sql += `CREATE TABLE IF NOT EXISTS ${this.name} (\n`;
+        let sql = `-- Entity: ${this.name}\r\n`;
+        sql += `CREATE TABLE IF NOT EXISTS ${this.name} (\r\n`;
         this.columns.forEach(col => {
-            sql += `\t${col.toSQL()},\n`;
+            sql += `\t${col.toSQL()},\r\n`;
         });
-        sql = sql.slice(0, -2); // Remove last comma
-        sql += "\n);\n\n";
+        sql = sql.slice(0, -3); // Remove last comma
+        sql += "\r\n);\r\n\r\n";
         return sql;
     }
 }
 
+/**
+ * Class to manage the creation, editing, and deletion of database entities (tables),
+ * as well as generating SQL statements for the entities.
+ * 
+ * The EntityEditor class allows users to create new database tables (entities),
+ * add or remove columns, modify column properties, and export the generated SQL 
+ * statements for creating the tables in MySQL.
+ */
 class EntityEditor {
+
+    /**
+     * Creates an instance of the EntityEditor class.
+     */
     constructor() {
         this.entities = [];
         this.currentEntityIndex = -1;
@@ -99,6 +168,9 @@ class EntityEditor {
         this.addCheckboxListeners();
     }
 
+    /**
+     * Adds event listeners to checkboxes for selecting and deselecting entities.
+     */
     addCheckboxListeners() {
         document.querySelector(".check-all-entity").addEventListener('change', (event) => {
             let checked = event.target.checked;
@@ -118,6 +190,12 @@ class EntityEditor {
         });
     }
 
+    /**
+     * Shows the entity editor with the columns of an existing entity or prepares
+     * a new entity for editing.
+     * 
+     * @param {number} entityIndex - The index of the entity to be edited. If not provided, a new entity is created.
+     */
     showEditor(entityIndex = -1) {
         if (entityIndex >= 0) {
             this.currentEntityIndex = entityIndex;
@@ -146,6 +224,12 @@ class EntityEditor {
         document.querySelector("#editor-form").style.display = "block";
     }
 
+    /**
+     * Adds a column to the columns table for editing.
+     * 
+     * @param {Column} column - The column to add.
+     * @param {boolean} [focus=false] - Whether to focus on the new column's name input.
+     */
     addColumnToTable(column, focus = false) {
         const tableBody = document.querySelector("#columns-table-body");
         const row = document.createElement("tr");
@@ -178,6 +262,11 @@ class EntityEditor {
         }
     }
 
+    /**
+     * Adds a new column to the entity being edited.
+     * 
+     * @param {boolean} [focus=false] - Whether to focus on the new column's name input.
+     */
     addColumn(focus = false) {
         const entityName = document.querySelector('#entity-name').value;
         let count = document.querySelectorAll('.column-name').length;
@@ -186,11 +275,21 @@ class EntityEditor {
         this.addColumnToTable(column, focus);
     }
 
+    /**
+     * Removes the selected column from the entity.
+     * 
+     * @param {HTMLElement} button - The button that was clicked to remove the column.
+     */
     removeColumn(button) {
         const row = button.closest("tr");
         row.remove();
     }
 
+    /**
+     * Moves a column up in the columns table.
+     * 
+     * @param {HTMLElement} button - The button that was clicked to move the column up.
+     */
     moveUp(button) {
         const row = button.closest("tr");
         const tableBody = document.querySelector("#columns-table-body");
@@ -200,6 +299,11 @@ class EntityEditor {
         }
     }
 
+    /**
+     * Moves a column down in the columns table.
+     * 
+     * @param {HTMLElement} button - The button that was clicked to move the column down.
+     */
     moveDown(button) {
         const row = button.closest("tr");
         const tableBody = document.querySelector("#columns-table-body");
@@ -209,6 +313,9 @@ class EntityEditor {
         }
     }
 
+    /**
+     * Saves the current entity, either updating an existing one or creating a new one.
+     */
     saveEntity() {
         const entityName = document.querySelector("#entity-name").value;
         const columns = [];
@@ -252,6 +359,9 @@ class EntityEditor {
         this.exportToSQL();
     }
 
+    /**
+     * Renders the list of entities and updates the table list in the UI.
+     */
     renderEntities() {
         const container = document.querySelector("#entities-container");
         container.innerHTML = '';
@@ -304,21 +414,39 @@ class EntityEditor {
         
     }
 
+    /**
+     * Edits the specified entity based on its index in the entities array.
+     * 
+     * @param {number} index - The index of the entity to edit.
+     */
     editEntity(index) {
         this.currentEntityIndex = index;
         this.showEditor(index);
     }
 
+    /**
+     * Deletes the specified entity based on its index in the entities array.
+     * 
+     * @param {number} index - The index of the entity to delete.
+     */
     deleteEntity(index) {
         this.entities.splice(index, 1);
         this.renderEntities();
         this.exportToSQL();
     }
 
+    /**
+     * Cancels the entity editing process and hides the editor form.
+     */
     cancelEdit() {
         document.querySelector("#editor-form").style.display = "none";
     }
 
+    /**
+     * Updates the length and enum fields based on the selected column type.
+     * 
+     * @param {HTMLElement} selectElement - The select element for the column type.
+     */
     updateColumnLengthInput(selectElement) {
         const row = selectElement.closest("tr");
         const columnType = selectElement.value;
@@ -340,6 +468,9 @@ class EntityEditor {
         }
     }
 
+    /**
+     * Exports the selected entities as a MySQL SQL statement for creating the tables.
+     */
     exportToSQL() {
         let sql = "";       
         const selectedEntities = document.querySelectorAll('.selected-entity:checked');  
@@ -355,11 +486,18 @@ class EntityEditor {
     }
     
 
-    // Handle file import (for MySQL dump)
+    /**
+     * Triggered when the user wants to import a SQL file.
+     */
     importFromSQL() {
         document.querySelector("#file-import").click();
     }
 
+    /**
+     * Handles the file import by reading the content of the SQL file.
+     * 
+     * @param {Event} event - The file import event.
+     */
     handleFileImport(event) {
         const file = event.target.files[0];
         const reader = new FileReader();
