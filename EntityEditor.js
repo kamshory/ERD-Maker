@@ -146,7 +146,8 @@ class EntityEditor {
     /**
      * Creates an instance of the EntityEditor class.
      */
-    constructor() {
+    constructor(selector) {
+        this.selector = selector;
         this.entities = [];
         this.currentEntityIndex = -1;
         this.mysqlDataTypes = [
@@ -172,7 +173,7 @@ class EntityEditor {
      * Adds event listeners to checkboxes for selecting and deselecting entities.
      */
     addCheckboxListeners() {
-        document.querySelector(".check-all-entity").addEventListener('change', (event) => {
+        document.querySelector(this.selector+" .check-all-entity").addEventListener('change', (event) => {
             let checked = event.target.checked;
             let allEntities = document.querySelectorAll(".selected-entity");
             if(allEntities)
@@ -183,7 +184,7 @@ class EntityEditor {
             }
             this.exportToSQL();
         });
-        document.querySelector("#table-list").addEventListener('change', (event) => {
+        document.querySelector(this.selector+" .table-list").addEventListener('change', (event) => {
             if (event.target.classList.contains('selected-entity')) {
                 this.exportToSQL();
             }
@@ -200,8 +201,8 @@ class EntityEditor {
         if (entityIndex >= 0) {
             this.currentEntityIndex = entityIndex;
             const entity = this.entities[entityIndex];
-            document.querySelector("#entity-name").value = entity.name;
-            document.querySelector("#columns-table-body").innerHTML = '';
+            document.querySelector(this.selector+" .entity-name").value = entity.name;
+            document.querySelector(this.selector+" .columns-table-body").innerHTML = '';
             entity.columns.forEach(col => this.addColumnToTable(col));
         } else {
             this.currentEntityIndex = -1;
@@ -218,10 +219,10 @@ class EntityEditor {
                     break;
                 }
             }
-            document.querySelector("#entity-name").value = newTableName;
-            document.querySelector("#columns-table-body").innerHTML = '';
+            document.querySelector(this.selector+" .entity-name").value = newTableName;
+            document.querySelector(this.selector+" .columns-table-body").innerHTML = '';
         }
-        document.querySelector("#editor-form").style.display = "block";
+        document.querySelector(this.selector+" .editor-form").style.display = "block";
     }
 
     /**
@@ -231,7 +232,7 @@ class EntityEditor {
      * @param {boolean} [focus=false] - Whether to focus on the new column's name input.
      */
     addColumnToTable(column, focus = false) {
-        const tableBody = document.querySelector("#columns-table-body");
+        const tableBody = document.querySelector(this.selector+" .columns-table-body");
         const row = document.createElement("tr");
         let columnLength = column.length == null ? '' : column.length.replace(/\D/g,'');
         let columnDefault = column.default == null ? '' : column.default;
@@ -270,7 +271,7 @@ class EntityEditor {
      * @param {boolean} [focus=false] - Whether to focus on the new column's name input.
      */
     addColumn(focus = false) {
-        const entityName = document.querySelector('#entity-name').value;
+        const entityName = document.querySelector(this.selector+" .entity-name").value;
         let count = document.querySelectorAll('.column-name').length;
         let countStr = count <= 0 ? '' : count + 1;
         const column = new Column(count == 0 ? `${entityName}_id` : `${entityName}_col${countStr}`);
@@ -294,7 +295,7 @@ class EntityEditor {
      */
     moveUp(button) {
         const row = button.closest("tr");
-        const tableBody = document.querySelector("#columns-table-body");
+        const tableBody = document.querySelector(this.selector+" .columns-table-body");
         const previousRow = row.previousElementSibling;
         if (previousRow) {
             tableBody.insertBefore(row, previousRow);
@@ -308,7 +309,7 @@ class EntityEditor {
      */
     moveDown(button) {
         const row = button.closest("tr");
-        const tableBody = document.querySelector("#columns-table-body");
+        const tableBody = document.querySelector(this.selector+" .columns-table-body");
         const nextRow = row.nextElementSibling;
         if (nextRow) {
             tableBody.insertBefore(nextRow, row);
@@ -319,7 +320,7 @@ class EntityEditor {
      * Saves the current entity, either updating an existing one or creating a new one.
      */
     saveEntity() {
-        const entityName = document.querySelector("#entity-name").value;
+        const entityName = document.querySelector(this.selector+" .entity-name").value;
         const columns = [];
         const columnNames = document.querySelectorAll(".column-name");
         const columnTypes = document.querySelectorAll(".column-type");
@@ -365,7 +366,7 @@ class EntityEditor {
      * Renders the list of entities and updates the table list in the UI.
      */
     renderEntities() {
-        const container = document.querySelector("#entities-container");
+        const container = document.querySelector(this.selector+" .entities-container");
         container.innerHTML = '';
         const selectedEntity = [];
         const selectedEntities = document.querySelectorAll('.selected-entity:checked');
@@ -376,7 +377,7 @@ class EntityEditor {
             });
         }
 
-        const tabelList = document.querySelector("#table-list");
+        const tabelList = document.querySelector(this.selector+" .table-list");
         tabelList.innerHTML = '';
         
         this.entities.forEach((entity, index) => {
@@ -440,7 +441,7 @@ class EntityEditor {
      * Cancels the entity editing process and hides the editor form.
      */
     cancelEdit() {
-        document.querySelector("#editor-form").style.display = "none";
+        document.querySelector(this.selector+" .editor-form").style.display = "none";
     }
 
     /**
@@ -483,7 +484,7 @@ class EntityEditor {
                 sql += entity.toSQL();
             }
         });
-        document.querySelector('.query-generated').value = sql;
+        document.querySelector(this.selector+" .query-generated").value = sql;
     }
     
 
@@ -491,7 +492,7 @@ class EntityEditor {
      * Triggered when the user wants to import a SQL file.
      */
     importFromSQL() {
-        document.querySelector("#file-import").click();
+        document.querySelector(this.selector+" .file-import").click();
     }
 
     /**

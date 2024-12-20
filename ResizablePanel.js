@@ -1,8 +1,9 @@
 class ResizablePanels {
-    constructor(leftPanelSelector, rightPanelSelector, resizeBarSelector, minWidth = 100) {
-        this.leftPanel = document.querySelector(leftPanelSelector);
-        this.rightPanel = document.querySelector(rightPanelSelector);
-        this.resizeBar = document.querySelector(resizeBarSelector);
+    constructor(selector, leftPanelSelector, rightPanelSelector, resizeBarSelector, minWidth = 100) {
+        this.selector = selector;
+        this.leftPanel = document.querySelector(selector+" "+leftPanelSelector);
+        this.rightPanel = document.querySelector(selector+" "+rightPanelSelector);
+        this.resizeBar = document.querySelector(selector+" "+resizeBarSelector);
         this.minWidth = minWidth;  // Minimum width for the left panel
 
         this.isResizing = false;
