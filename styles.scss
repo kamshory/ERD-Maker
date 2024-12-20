@@ -1,4 +1,4 @@
-// Variabel untuk warna dan ukuran
+// Variable for color and size
 $primary-bg-color: #f4f4f4;
 $border-color: #ddd;
 $light-bg-color: #f1f1f1;
@@ -23,7 +23,6 @@ html {
 }
 
 body {
-
     margin: 0;
     padding: 0;
 }
@@ -33,11 +32,11 @@ body {
     padding: 0;
     font-family: $font-family;
     font-size: $font-size;
-    
+
     height: 100%;
     width: 100%;
     position: relative;
-    // Container untuk entities
+    // Container for entities
     .entities-container {
         margin: 0;
         height: calc(100vh - 350px);
@@ -45,14 +44,14 @@ body {
         overflow: auto;
     }
 
-    // Container utama
+    // Main container
     .container {
         display: flex;
         width: 100%;
         overflow: hidden;
     }
 
-    // Panel kiri dan kanan
+    // Left and right panels
     .left-panel,
     .right-panel {
         overflow: auto;
@@ -65,7 +64,7 @@ body {
         cursor: ew-resize;
     }
 
-    // Ukuran panel
+    // Panel size
     .left-panel {
         width: calc(70% - 5px);
     }
@@ -101,7 +100,7 @@ body {
         cursor: pointer;
     }
 
-    // Input dan select styling
+    // Input and select styling
     input[type="text"],
     select {
         padding: $input-padding;
@@ -305,5 +304,4 @@ body {
             line-height: 1.5;
         }
     }
-
 }
