@@ -125,7 +125,7 @@ select {
         .column-action {
             text-align: center;
             white-space: nowrap;
-            width: 50px;
+            width: 64px;
 
             button {
                 font-size: 13px;
@@ -157,6 +157,12 @@ select {
                 top: -1px;
                 left: 0;
             }
+            
+            &.column-nl, &.column-pk, &.column-ai
+            {
+                width: 20px;
+                text-align: center;
+            }
         }
 
         td {
@@ -164,6 +170,11 @@ select {
             padding: 0;
             text-align: left;
             font-size: 8px;
+            
+            &.column-nl, &.column-pk, &.column-ai
+            {
+                text-align: center;
+            }
 
             input[type="text"],
             select {

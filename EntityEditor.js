@@ -233,6 +233,8 @@ class EntityEditor {
     addColumnToTable(column, focus = false) {
         const tableBody = document.querySelector("#columns-table-body");
         const row = document.createElement("tr");
+        let columnLength = column.length == null ? '' : column.length.replace(/\D/g,'');
+        let columnDefault = column.default == null ? '' : column.default;
 
         let typeSimple = column.type.split('(')[0].trim();
         row.innerHTML = `
@@ -247,12 +249,12 @@ class EntityEditor {
                     ${this.mysqlDataTypes.map(typeOption => `<option value="${typeOption}" ${typeOption === typeSimple ? 'selected' : ''}>${typeOption}</option>`).join('')}
                 </select>
             </td>
-            <td><input type="text" class="column-length" value="${column.length}" placeholder="Length" style="display: ${this.typeWithLength.includes(typeSimple) ? 'inline' : 'none'};"></td>
+            <td><input type="text" class="column-length" value="${columnLength}" placeholder="Length" style="display: ${this.typeWithLength.includes(typeSimple) ? 'inline' : 'none'};"></td>
             <td><input type="text" class="column-enum" value="${column.enumValues}" placeholder="Values (comma separated)" style="display: ${typeSimple === 'ENUM' || typeSimple === 'SET' ? 'inline' : 'none'};"></td>
-            <td><input type="text" class="column-default" value="${column.default}" placeholder="Default Value"></td>
-            <td><input type="checkbox" class="column-nullable" ${column.nullable ? 'checked' : ''}></td>
-            <td><input type="checkbox" class="column-primaryKey" ${column.primaryKey ? 'checked' : ''}></td>
-            <td><input type="checkbox" class="column-autoIncrement" ${column.autoIncrement ? 'checked' : ''}></td>
+            <td><input type="text" class="column-default" value="${columnDefault}" placeholder="Default Value"></td>
+            <td class="column-nl"><input type="checkbox" class="column-nullable" ${column.nullable ? 'checked' : ''}></td>
+            <td class="column-pk"><input type="checkbox" class="column-primaryKey" ${column.primaryKey ? 'checked' : ''}></td>
+            <td class="column-ai"><input type="checkbox" class="column-autoIncrement" ${column.autoIncrement ? 'checked' : ''}></td>
         `;
 
         tableBody.appendChild(row);
@@ -271,7 +273,7 @@ class EntityEditor {
         const entityName = document.querySelector('#entity-name').value;
         let count = document.querySelectorAll('.column-name').length;
         let countStr = count <= 0 ? '' : count + 1;
-        const column = new Column(`${entityName}_col${countStr}`);
+        const column = new Column(count == 0 ? `${entityName}_id` : `${entityName}_col${countStr}`);
         this.addColumnToTable(column, focus);
     }
 
@@ -376,7 +378,6 @@ class EntityEditor {
 
         const tabelList = document.querySelector("#table-list");
         tabelList.innerHTML = '';
-        
         
         this.entities.forEach((entity, index) => {
             const entityDiv = document.createElement("div");
